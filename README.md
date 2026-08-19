@@ -1,10 +1,10 @@
 Group 1 : **Customer Risk Prediction**
 
-Machine Learning Weekend Challenge | Group 1
+Machine Learning Weekend Challenge Group 1
 
 &#x20;Business Scenario
 
-A financial company wants to identify customers who are likely to be high-risk. This project develops a complete machine learning pipeline — from data investigation to model deployment — using a synthetic customer dataset.
+A financial company wants to identify customers who are likely to be high-risk. This project develops a complete machine learning pipeline from data investigation to model deployment using a synthetic customer dataset.
 
 
 
