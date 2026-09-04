@@ -1,146 +1,78 @@
-Group 1 : **Customer Risk Prediction**
+# Customer Risk Prediction
 
-Machine Learning Weekend Challenge Group 1
+An end-to-end machine learning classification project for identifying high-risk customers from demographic and behavioral data.
 
-&#x20;Business Scenario
+## Project Overview
 
-A financial company wants to identify customers who are likely to be high-risk. This project develops a complete machine learning pipeline from data investigation to model deployment using a synthetic customer dataset.
+A financial company needs a reliable way to identify customers who are likely to be high-risk. This project builds and evaluates a complete machine learning workflow using a synthetic customer dataset, with special attention to data leakage, model validation, and generalization.
 
+**Task:** Binary Classification  
+**Target:** `target` (`0 = Low Risk`, `1 = High Risk`)  
+**Dataset size:** 5,000 samples  
+**Original features:** age, income, transactions, risk_score
 
+## Key Challenge: Data Leakage
 
-&#x20; **Problem Definition**
+During model investigation, the `risk_score` feature was discovered to be directly related to how the target variable was constructed. Keeping it produced unrealistically perfect model performance.
 
-Task Type: **Binary Classification**
+To build a more trustworthy model, `risk_score` was removed and the models were retrained using genuine predictive features.
 
-Target Variable: target (0 = Low Risk, 1 = High Risk)
+## Models Evaluated
 
-Goal: Predict whether a customer belongs to the high-risk category based on their demographic and behavioral data
+| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
+|---|---:|---:|---:|---:|---:|
+| Logistic Regression | 94.9% | 94.3% | 95.6% | 94.9% | 0.990 |
+| Decision Tree | 98.5% | 98.0% | 99.0% | 98.5% | 0.985 |
+| Random Forest | **99.0%** | **98.8%** | **99.2%** | **99.0%** | **0.999** |
+| SVM | 98.8% | 98.4% | 99.2% | 98.8% | 0.9996 |
 
+**Selected model:** Random Forest
 
+## Generalization Test
 
-Datasets
+The final model was also tested on a completely new synthetic dataset generated with a different random seed.
 
-properties: value
+- Original test accuracy: **99.0%**
+- New unseen data accuracy: **97.95%**
+- Generalization gap: **1.05%**
 
-Samples: 5000
+This additional test helps demonstrate that the final model is not simply memorizing the original split.
 
-Features: age, income, transactions, risk\_score
+## Key Findings
 
-Targets: target(balanced: 2500 by 2500)
+- `transactions` was the strongest genuine predictor, with a reported correlation of approximately `0.807` with the target.
+- Extremely high performance should always trigger investigation for leakage.
+- Testing on unseen data provides stronger evidence of generalization than relying on a single train/test split.
+- Feature investigation is as important as model selection.
 
-Source: Synthetically generated
+## Repository Structure
 
-Key Investigation Findings
+```text
+Group1/
+├── app/          # Application / deployment files
+├── data/         # Project datasets
+├── models/       # Saved model artifacts
+├── notebooks/    # Exploration and model-development notebooks
+├── src/          # Supporting source code
+├── requirement.txt
+└── README.md
+```
 
-1\. Data Leakage Discovered
+## Tools & Technologies
 
-The risk\_score feature was used directly to construct the target variable:
+Python · Pandas · NumPy · Scikit-learn · Machine Learning · Classification · Model Evaluation
 
-Code
+## What This Project Demonstrates
 
-This caused Decision Tree and Random Forest to achieve an unrealistic 100% accuracy.
+- Exploratory data analysis
+- Feature investigation
+- Data leakage detection
+- Model comparison
+- Classification metrics
+- Generalization testing
+- Reproducible ML project organization
 
+## Author
 
-
-2\. Correction Applied
-
-risk\_score was removed from the feature set. Models were retrained using only age, income\_log, and transactions.
-
-3\. Realistic Performance After Correction
-
-Model for this parameters:
-
-Accuracy
-
-Precision
-
-Recall
-
-F1
-
-ROC-AUC
-
-Logistic Regression
-
-94.9%
-
-94.3%
-
-95.6%
-
-94.9%
-
-0.990
-
-Decision Tree
-
-98.5%
-
-98.0%
-
-99.0%
-
-98.5%
-
-0.985
-
-Random Forest 
-
-99.0%
-
-98.8%
-
-99.2%
-
-99.0%
-
-0.999
-
-SVM
-
-98.8%
-
-98.4%
-
-99.2%
-
-98.8%
-
-0.9996
-
-4\. Strongest True Predictor
-
-transactions showed the highest correlation with the target (r = 0.807), independently confirmed through EDA — not from the leaked feature.
-
-5\. Generalization Test
-
-The final model was evaluated on a completely new, unseen synthetic dataset (different random seed):
-
-Original test accuracy: 99.0%
-
-New unseen data accuracy: 97.95%
-
-Generalization gap: only 1.05% → model generalizes well
-
-&#x20;Models Trained
-
-Logistic Regression
-
-Decision Tree
-
-Random Forest  (Final selected model)
-
-Support Vector Machine (SVM)
-
-
-
-Lessons Learned
-
-Always investigate unusually high model performance before trusting it
-
-Data leakage can silently inflate accuracy without any coding error
-
-Cross-validation and testing on completely unseen data are essential for verifying true generalization
-
-The strongest correlated feature (transactions) was not the same as the leakage source (risk\_score) — both had to be investigated separately
-
+**Dier Focus**  
+GitHub: [@dier2003](https://github.com/dier2003)
