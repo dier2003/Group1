@@ -1,78 +1,118 @@
 # Customer Risk Prediction
 
-An end-to-end machine learning classification project for identifying high-risk customers from demographic and behavioral data.
+An end-to-end machine-learning classification project exploring how customer attributes relate to a binary risk label. The repository documents model comparison, leakage investigation, and a generalization check using synthetic data.
 
-## Project Overview
+> **Dataset note:** The README describes a synthetic dataset. The reported results are experimental results for this project and should not be interpreted as validated performance on real customers.
 
-A financial company needs a reliable way to identify customers who are likely to be high-risk. This project builds and evaluates a complete machine learning workflow using a synthetic customer dataset, with special attention to data leakage, model validation, and generalization.
+## Project summary
 
-**Task:** Binary Classification  
-**Target:** `target` (`0 = Low Risk`, `1 = High Risk`)  
-**Dataset size:** 5,000 samples  
-**Original features:** age, income, transactions, risk_score
+- **Task:** Binary classification
+- **Target:** `target` (`0 = Low Risk`, `1 = High Risk`)
+- **Dataset:** 5,000 synthetic samples, according to the project analysis
+- **Candidate models:** Logistic Regression, Decision Tree, Random Forest, and SVM
+- **Selected model in the current analysis:** Random Forest
 
-## Key Challenge: Data Leakage
+## Why this project matters
 
-During model investigation, the `risk_score` feature was discovered to be directly related to how the target variable was constructed. Keeping it produced unrealistically perfect model performance.
+During model investigation, `risk_score` was found to be directly related to target construction. Keeping it produced suspiciously strong results, so it was excluded from the final comparison. This demonstrates why leakage checks and validation are essential parts of a machine-learning workflow.
 
-To build a more trustworthy model, `risk_score` was removed and the models were retrained using genuine predictive features.
+## Reported evaluation
 
-## Models Evaluated
+The current project analysis reports these results:
 
-| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
+| Model | Accuracy | Precision | Recall | F1 score | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
 | Logistic Regression | 94.9% | 94.3% | 95.6% | 94.9% | 0.990 |
 | Decision Tree | 98.5% | 98.0% | 99.0% | 98.5% | 0.985 |
 | Random Forest | **99.0%** | **98.8%** | **99.2%** | **99.0%** | **0.999** |
 | SVM | 98.8% | 98.4% | 99.2% | 98.8% | 0.9996 |
 
-**Selected model:** Random Forest
+A separate synthetic-data generalization test is reported at 97.95% accuracy. Re-run the notebooks to reproduce these figures before relying on them.
 
-## Generalization Test
+## Workflow
 
-The final model was also tested on a completely new synthetic dataset generated with a different random seed.
+```text
+Synthetic data
+    ↓
+Exploratory data analysis
+    ↓
+Target leakage investigation
+    ↓
+Feature selection and preprocessing
+    ↓
+Model training and comparison
+    ↓
+Held-out evaluation
+    ↓
+Generalization check
+```
 
-- Original test accuracy: **99.0%**
-- New unseen data accuracy: **97.95%**
-- Generalization gap: **1.05%**
-
-This additional test helps demonstrate that the final model is not simply memorizing the original split.
-
-## Key Findings
-
-- `transactions` was the strongest genuine predictor, with a reported correlation of approximately `0.807` with the target.
-- Extremely high performance should always trigger investigation for leakage.
-- Testing on unseen data provides stronger evidence of generalization than relying on a single train/test split.
-- Feature investigation is as important as model selection.
-
-## Repository Structure
+## Repository structure
 
 ```text
 Group1/
-├── app/          # Application / deployment files
-├── data/         # Project datasets
-├── models/       # Saved model artifacts
-├── notebooks/    # Exploration and model-development notebooks
-├── src/          # Supporting source code
-├── requirement.txt
+├── app/
+│   └── app.py              # Application scaffold; currently empty
+├── data/                   # Data assets, if supplied
+├── models/                 # Model artifacts, if supplied
+├── notebooks/              # Analysis notebooks
+├── src/
+│   └── data_generation.py  # Synthetic data generation
+├── requirements.txt
 └── README.md
 ```
 
-## Tools & Technologies
+## Setup
 
-Python · Pandas · NumPy · Scikit-learn · Machine Learning · Classification · Model Evaluation
+1. Clone the repository:
 
-## What This Project Demonstrates
+   ```bash
+   git clone https://github.com/dier2003/Group1.git
+   cd Group1
+   ```
 
-- Exploratory data analysis
-- Feature investigation
-- Data leakage detection
-- Model comparison
-- Classification metrics
-- Generalization testing
-- Reproducible ML project organization
+2. Create and activate a virtual environment.
+
+   **Windows PowerShell**
+   ```powershell
+   py -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+   **macOS / Linux**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. Install the listed dependencies:
+
+   ```bash
+   python -m pip install --upgrade pip
+   pip install -r requirements.txt
+   ```
+
+4. Open the notebooks directory in Jupyter to inspect the analysis:
+
+   ```bash
+   jupyter lab notebooks/
+   ```
+
+   The `app/app.py` file is currently an empty scaffold, so there is no working web demo to launch from it yet.
+
+## Technology
+
+Python · Pandas · NumPy · scikit-learn · Matplotlib · Seaborn · Joblib · Streamlit · Jupyter
+
+## Limitations and next steps
+
+- Replace or supplement synthetic data with a properly licensed, documented dataset if the project is intended to represent a real business use case.
+- Add reproducible train/test split and random-seed details.
+- Add a confusion matrix and ROC curve generated by the analysis.
+- Add tests for preprocessing and inference.
+- Implement and test the app before linking a live demo.
+- Add screenshots from the real notebook outputs or a working app after capturing them.
 
 ## Author
 
-**Dier Focus**  
-GitHub: [@dier2003](https://github.com/dier2003)
+**Dier Focus** · [GitHub @dier2003](https://github.com/dier2003)
